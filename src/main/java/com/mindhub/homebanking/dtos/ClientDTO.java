@@ -28,14 +28,10 @@ public class ClientDTO {
     public String getLastName() {
         return lastName;
     }
-
     public Set<AccountDTO> getAccounts() {
-        return accounts;
-    }
-
+        return accounts;}
     public String getEmail() {
         return email;
     }
-
 
 }
