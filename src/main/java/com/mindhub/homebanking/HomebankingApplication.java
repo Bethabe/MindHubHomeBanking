@@ -16,7 +16,6 @@ import java.time.LocalDate;
 
 @SpringBootApplication
 public class HomebankingApplication {
-
 	public static void main(String[] args) {
 		SpringApplication.run(HomebankingApplication.class, args);
 	}
@@ -82,7 +81,6 @@ public class HomebankingApplication {
 			Transaction transaction9 = new Transaction(TransactionType.CREDIT, 34000.00, "Nota de Crédito n°023423-4 ");
 			account3.addTransactions(transaction9);
 			transactionRepository.save(transaction9);
-
 		};
 	}
 }

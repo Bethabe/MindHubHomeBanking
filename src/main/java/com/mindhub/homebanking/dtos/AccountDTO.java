@@ -14,16 +14,13 @@ public class AccountDTO {
     private LocalDate creationDate;
     private Double balance;
     private Set<TransactionDTO> transactions;
-
     public AccountDTO(Account account){
-
         id = account.getId();
         number =account.getNumber();
         creationDate = account.getCreationDate();
         balance = account.getBalance();
         transactions = account.getTransactions().stream().map(element-> new TransactionDTO(element)).collect(Collectors.toSet());
     }
-
     public Long getId() {
         return id;
     }
