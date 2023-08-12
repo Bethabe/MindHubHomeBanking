@@ -21,6 +21,7 @@ public class Account {
     private Client client;
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "account")
     private Set<Transaction> transactions = new HashSet<>();
+
     public Account(){
     }
     public Account (String number, LocalDate creationDate, Double balance){

@@ -1,18 +1,14 @@
 package com.mindhub.homebanking;
 
-import com.mindhub.homebanking.models.Account;
-import com.mindhub.homebanking.models.Client;
-import com.mindhub.homebanking.models.Transaction;
-import com.mindhub.homebanking.models.TransactionType;
-import com.mindhub.homebanking.repositories.AccountRepository;
-import com.mindhub.homebanking.repositories.ClientRepository;
-import com.mindhub.homebanking.repositories.TransactionRepository;
+import com.mindhub.homebanking.models.*;
+import com.mindhub.homebanking.repositories.*;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @SpringBootApplication
 public class HomebankingApplication {
@@ -20,7 +16,7 @@ public class HomebankingApplication {
 		SpringApplication.run(HomebankingApplication.class, args);
 	}
 	@Bean
-	public CommandLineRunner init(ClientRepository clientRepository, AccountRepository accountRepository, TransactionRepository transactionRepository){
+	public CommandLineRunner init(ClientRepository clientRepository, AccountRepository accountRepository, TransactionRepository transactionRepository, LoanRepository loanRepository, ClientLoanRepository clientLoanRepository){
 		return args -> {
 			Client client = new Client();
 			client.setLastName("Morel");
@@ -81,6 +77,31 @@ public class HomebankingApplication {
 			Transaction transaction9 = new Transaction(TransactionType.CREDIT, 34000.00, "Nota de Crédito n°023423-4 ");
 			account3.addTransactions(transaction9);
 			transactionRepository.save(transaction9);
+
+			List<Integer> paymentsHipot= List.of(12,24,36,48,60);
+			List<Integer> paymentsPers= List.of(6,12,24);
+			List<Integer> paymentsAuto= List.of(6,12,24,36);
+
+			Loan loanHip = new Loan("Hipotecario", 500000.00, paymentsHipot);
+			loanRepository.save(loanHip);
+
+			Loan loanPers = new Loan("Personal",10000.00,paymentsPers);
+			loanRepository.save(loanPers);
+
+			Loan loanAuto = new Loan("Automotriz", 300000.00, paymentsAuto);
+			loanRepository.save(loanAuto);
+
+			ClientLoan clientLoan1 = new ClientLoan(60, 40000.00, client,loanHip);
+			clientLoanRepository.save(clientLoan1);
+
+			ClientLoan clientLoan2 = new ClientLoan(12, 50000.00,client, loanPers);
+			clientLoanRepository.save(clientLoan2);
+
+			ClientLoan clientLoan3 = new ClientLoan(24, 100000.00, client1, loanPers);
+			clientLoanRepository.save(clientLoan3);
+
+			ClientLoan clientLoan4 = new ClientLoan(36, 200000.00, client1, loanAuto);
+			clientLoanRepository.save(clientLoan4);
 		};
 	}
 }
