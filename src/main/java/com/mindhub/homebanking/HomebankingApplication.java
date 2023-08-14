@@ -2,16 +2,25 @@ package com.mindhub.homebanking;
 
 import com.mindhub.homebanking.models.*;
 import com.mindhub.homebanking.repositories.*;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.time.LocalDate;
 import java.util.List;
 
 @SpringBootApplication
 public class HomebankingApplication {
+	@Autowired
+	private PasswordEncoder passwordEncoder;
+
+	public PasswordEncoder getPasswordEncoder(String password) {
+		return passwordEncoder;
+	}
+
 	public static void main(String[] args) {
 		SpringApplication.run(HomebankingApplication.class, args);
 	}
@@ -22,12 +31,15 @@ public class HomebankingApplication {
 			client.setLastName("Morel");
 			client.setFirstName("Melba");
 			client.setEmail("melba@mindhub.com");
+			client.setPassword("melba");
 			clientRepository.save(client);
+			getPasswordEncoder(client.getPassword());
 
 			Client client1 = new Client();
 			client1.setLastName("Gonzalez");
 			client1.setFirstName("Luca");
 			client1.setEmail("lgonzalez@mindhub.com");
+			client1.setPassword("gonzalez");
 			clientRepository.save(client1);
 
 			Account account1 = new Account("VIN001", LocalDate.now(),5000.00);
@@ -110,6 +122,7 @@ public class HomebankingApplication {
 			Card cardMelba1 = new Card(client.getFirstName()+" "+client.getLastName(),CardType.CREDIT,CardColor.TITANIUM,98798667,987,LocalDate.now(),LocalDate.now().plusYears(5));
 			client.addCard(cardMelba1);
 			cardRepository.save(cardMelba1);
+
 		};
 	}
 }
