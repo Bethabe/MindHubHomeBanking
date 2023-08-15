@@ -103,11 +103,11 @@ public class HomebankingApplication {
 			ClientLoan clientLoan4 = new ClientLoan(36, 200000.00, client1, loanAuto);
 			clientLoanRepository.save(clientLoan4);
 
-			Card cardMelba = new Card(client.getFirstName()+" "+client.getLastName(),CardType.DEBIT,CardColor.GOLDEN,324234980,221,LocalDate.now(),LocalDate.now().plusYears(5));
+			Card cardMelba = new Card(client.getFirstName()+" "+client.getLastName(),CardType.DEBIT,CardColor.GOLDEN,"3242-3498-9870",221,LocalDate.now(),LocalDate.now().plusYears(5));
 			client.addCard(cardMelba);
 			cardRepository.save(cardMelba);
 
-			Card cardMelba1 = new Card(client.getFirstName()+" "+client.getLastName(),CardType.CREDIT,CardColor.TITANIUM,98798667,987,LocalDate.now(),LocalDate.now().plusYears(5));
+			Card cardMelba1 = new Card(client.getFirstName()+" "+client.getLastName(),CardType.CREDIT,CardColor.TITANIUM,"9879-8667-2343",987,LocalDate.now(),LocalDate.now().plusYears(5));
 			client.addCard(cardMelba1);
 			cardRepository.save(cardMelba1);
 		};
