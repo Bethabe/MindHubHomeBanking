@@ -9,7 +9,6 @@ import java.util.Set;
 
 @Entity
 public class Loan {
-
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO, generator = "native")
     @GenericGenerator(name= "native",strategy = "native")
@@ -20,7 +19,7 @@ public class Loan {
     @Column(name = "fees")
     private List<Integer> payments  =  List.of();
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "loan")
-    Set<ClientLoan> clientLoans = new HashSet<>();
+    private Set<ClientLoan> clientLoans = new HashSet<>();
     public Loan(){
     }
     public Loan(String name, Double maxAmount, List<Integer> payments){

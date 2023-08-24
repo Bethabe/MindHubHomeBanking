@@ -12,10 +12,10 @@ public class Account {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO, generator = "native")
     @GenericGenerator(name = "native", strategy = "native")
-    Long id;
-    String number;
-    LocalDate creationDate;
-    Double balance;
+    private Long id;
+    private String number;
+    private LocalDate creationDate;
+    private Double balance;
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "client")
     private Client client;

@@ -16,7 +16,6 @@ import java.util.stream.Collectors;
 public class AccountController {
     @Autowired
     AccountRepository accountRepository;
-
     @RequestMapping(value = "/accounts")
         public List<AccountDTO> getAccounts(){
         return accountRepository.findAll().stream().map(element-> new AccountDTO(element)).collect(Collectors.toList());

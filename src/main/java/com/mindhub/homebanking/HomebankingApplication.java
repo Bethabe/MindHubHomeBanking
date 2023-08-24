@@ -17,10 +17,6 @@ public class HomebankingApplication {
 	@Autowired
 	private PasswordEncoder passwordEncoder;
 
-	public PasswordEncoder getPasswordEncoder(String password) {
-		return passwordEncoder;
-	}
-
 	public static void main(String[] args) {
 		SpringApplication.run(HomebankingApplication.class, args);
 	}
@@ -31,16 +27,19 @@ public class HomebankingApplication {
 			client.setLastName("Morel");
 			client.setFirstName("Melba");
 			client.setEmail("melba@mindhub.com");
-			client.setPassword("melba");
+			client.setPassword(passwordEncoder.encode("melba"));
 			clientRepository.save(client);
-			getPasswordEncoder(client.getPassword());
+
 
 			Client client1 = new Client();
 			client1.setLastName("Gonzalez");
 			client1.setFirstName("Luca");
 			client1.setEmail("lgonzalez@mindhub.com");
-			client1.setPassword("gonzalez");
+			client1.setPassword(passwordEncoder.encode("gonzalez"));
 			clientRepository.save(client1);
+
+			Client clientAdm = new Client("admin", "admin","admin@gmail.com", passwordEncoder.encode("1111"));
+			clientRepository.save(clientAdm);
 
 			Account account1 = new Account("VIN001", LocalDate.now(),5000.00);
 			client.addAccount(account1);
