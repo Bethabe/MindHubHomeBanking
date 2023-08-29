@@ -121,7 +121,6 @@ public class HomebankingApplication {
 			Card cardMelba1 = new Card(client.getFirstName()+" "+client.getLastName(),CardType.CREDIT,CardColor.TITANIUM,98798667,987,LocalDate.now(),LocalDate.now().plusYears(5));
 			client.addCard(cardMelba1);
 			cardRepository.save(cardMelba1);
-
 		};
 	}
 }
