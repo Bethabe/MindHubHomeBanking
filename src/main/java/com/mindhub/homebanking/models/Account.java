@@ -23,12 +23,16 @@ public class Account {
     private Set<Transaction> transactions = new HashSet<>();
 
     public Account(){
+        this.balance = 0.00;
+        this.creationDate= LocalDate.now();
+        this.number= String.format("VIN-%d", (int) (Math.random() * (99999999 - 10000000) + 10000000));
     }
     public Account (String number, LocalDate creationDate, Double balance){
         this.number = number;
         this.creationDate = creationDate;
         this.balance = balance;
     }
+
     public Client getClient() {
         return client;
     }

@@ -2,13 +2,21 @@ package com.mindhub.homebanking.controllers;
 
 import com.mindhub.homebanking.dtos.AccountDTO;
 import com.mindhub.homebanking.models.Account;
+import com.mindhub.homebanking.models.Client;
 import com.mindhub.homebanking.repositories.AccountRepository;
+import com.mindhub.homebanking.repositories.ClientRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.net.http.HttpRequest;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @RestController
@@ -16,6 +24,8 @@ import java.util.stream.Collectors;
 public class AccountController {
     @Autowired
     AccountRepository accountRepository;
+    @Autowired
+    ClientRepository clientRepository;
     @RequestMapping(value = "/accounts")
         public List<AccountDTO> getAccounts(){
         return accountRepository.findAll().stream().map(element-> new AccountDTO(element)).collect(Collectors.toList());
@@ -23,5 +33,21 @@ public class AccountController {
     @RequestMapping(value = "/accounts/{id}")
         public AccountDTO getaccount(@PathVariable Long id){
         return new AccountDTO(accountRepository.findById(id).orElse(null));
+    }
+    @PostMapping(value = "/clients/current/accounts")
+        public ResponseEntity<Object> createAccount(Authentication authentication){
+        Client client = clientRepository.findByEmail(authentication.getName());
+        Set<Account> setAccounts = client.getAccounts();
+        int cantCuentas = setAccounts.size();
+        if (cantCuentas == 3){
+            return new ResponseEntity<>("Ya posee el número máximo de cuentas permitidas", HttpStatus.FORBIDDEN);
+        }else{
+            Account account = new Account();
+            client.addAccount(account);
+            accountRepository.save(account);
+            return new ResponseEntity<>(HttpStatus.CREATED);
         }
+    }
+
+
 }

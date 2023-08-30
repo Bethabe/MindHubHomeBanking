@@ -2,7 +2,9 @@ package com.mindhub.homebanking.controllers;
 
 import com.mindhub.homebanking.configurations.WebAuthentication;
 import com.mindhub.homebanking.dtos.ClientDTO;
+import com.mindhub.homebanking.models.Account;
 import com.mindhub.homebanking.models.Client;
+import com.mindhub.homebanking.repositories.AccountRepository;
 import com.mindhub.homebanking.repositories.ClientRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -20,6 +22,8 @@ import java.util.stream.Collectors;
 public class ClientController {
     @Autowired
     private ClientRepository clientRepository;
+    @Autowired
+    private AccountRepository accountRepository;
     @Autowired
     private PasswordEncoder passwordEncoder;
     @RequestMapping(value = "/clients")
@@ -42,6 +46,10 @@ public class ClientController {
             return new ResponseEntity<>("Name already in use", HttpStatus.FORBIDDEN);
         }
         clientRepository.save(new Client(firstName, lastName, email, passwordEncoder.encode(password)));
+        Client client = clientRepository.findByEmail(email);
+        Account account = new Account();
+        client.addAccount(account);
+        accountRepository.save(account);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
     @RequestMapping(value = "/clients/current")
