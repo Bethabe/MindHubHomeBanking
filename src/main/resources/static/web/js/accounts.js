@@ -1,4 +1,5 @@
 Vue.createApp({
+
     data() {
         return {
             clientInfo: {},
@@ -31,7 +32,7 @@ Vue.createApp({
                 })
         },
         create: function () {
-            axios.post('/api/clients/current')
+            axios.post('/api/clients/current/accounts')
                 .then(response => window.location.reload())
                 .catch((error) => {
                     this.errorMsg = error.response.data;
