@@ -25,7 +25,6 @@ public class Account {
     public Account(){
         this.balance = 0.00;
         this.creationDate= LocalDate.now();
-        this.number= String.format("VIN-%d", (int) (Math.random() * (99999999 - 10000000) + 10000000));
     }
     public Account (String number, LocalDate creationDate, Double balance){
         this.number = number;

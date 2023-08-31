@@ -36,16 +36,25 @@ public class AccountController {
     }
     @PostMapping(value = "/clients/current/accounts")
         public ResponseEntity<Object> createAccount(Authentication authentication){
-        Client client = clientRepository.findByEmail(authentication.getName());
-        Set<Account> setAccounts = client.getAccounts();
-        int cantCuentas = setAccounts.size();
-        if (cantCuentas == 3){
-            return new ResponseEntity<>("Ya posee el número máximo de cuentas permitidas", HttpStatus.FORBIDDEN);
-        }else{
-            Account account = new Account();
-            client.addAccount(account);
-            accountRepository.save(account);
-            return new ResponseEntity<>(HttpStatus.CREATED);
+        if (authentication !=null){
+            Client client = clientRepository.findByEmail(authentication.getName());
+            Set<Account> setAccounts = client.getAccounts();
+            int cantCuentas = setAccounts.size();
+            String number;
+            if (cantCuentas >= 3){
+                return new ResponseEntity<>("Ya posee el número máximo de cuentas permitidas", HttpStatus.FORBIDDEN);
+            }else{
+                Account account = new Account();
+                do{
+                    number =  String.format("VIN-%d", (int) (Math.random() * (99999999 - 10000000) + 10000000));
+                }while(accountRepository.existsByNumber(number));
+                account.setNumber(number);
+                client.addAccount(account);
+                accountRepository.save(account);
+                return new ResponseEntity<>(HttpStatus.CREATED);
+        }
+        }else {
+            return  new ResponseEntity<>(HttpStatus.FORBIDDEN);
         }
     }
 
