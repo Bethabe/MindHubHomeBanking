@@ -28,16 +28,16 @@ public class CardController {
     ClientRepository clientRepository;
 
     @PostMapping(value = "/clients/current/cards")
-    ResponseEntity<Object> createCard(Authentication authentication,  @RequestParam CardType type, @RequestParam CardColor color)
+    ResponseEntity<Object> createCard(Authentication authentication,  @RequestParam CardType cardType, @RequestParam CardColor cardColor)
     {
         if(authentication !=null){
             Client client =  clientRepository.findByEmail(authentication.getName());
             String cardNumber;
-            if (!client.getCards().stream().filter(card -> card.getType().equals(type)&& card.getColor().equals(color)).collect(Collectors.toSet()).isEmpty())
+            if (!client.getCards().stream().filter(card -> card.getType().equals(cardType)&& card.getColor().equals(cardColor)).collect(Collectors.toSet()).isEmpty())
             {
                 return new ResponseEntity<>("Ya posee este tipo de tarjeta", HttpStatus.FORBIDDEN);
             } else{
-                Card card = new Card(type,color);
+                Card card = new Card(cardType,cardColor);
                 card.setCardHolder(client.getFirstName()+" "+client.getLastName());
                 card.setFromDate(LocalDate.now());
                 card.setThruDate(LocalDate.now().plusYears(5));
@@ -52,7 +52,7 @@ public class CardController {
                 card.setNumber(cardNumber);
                 client.addCard(card);
                 cardRepository.save(card);
-                return new ResponseEntity<>("Correcto", HttpStatus.CREATED);
+                return new ResponseEntity<>("Card creada.Correcto", HttpStatus.CREATED);
             }
         }else{
             return  new ResponseEntity<>("Usuario no autenticado", HttpStatus.EXPECTATION_FAILED);
