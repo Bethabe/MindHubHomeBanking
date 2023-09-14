@@ -23,7 +23,7 @@ public class HomebankingApplication {
 	@Bean
 	public CommandLineRunner init(ClientRepository clientRepository, AccountRepository accountRepository, TransactionRepository transactionRepository, LoanRepository loanRepository, ClientLoanRepository clientLoanRepository, CardRepository cardRepository){
 		return args -> {
-			Client client = new Client();
+			/*Client client = new Client();
 			client.setLastName("Morel");
 			client.setFirstName("Melba");
 			client.setEmail("melba@mindhub.com");
@@ -120,7 +120,7 @@ public class HomebankingApplication {
 
 			Card cardMelba1 = new Card(client.getFirstName()+" "+client.getLastName(),CardType.CREDIT,CardColor.TITANIUM,"9879-8667-0988",987,LocalDate.now(),LocalDate.now().plusYears(5));
 			client.addCard(cardMelba1);
-			cardRepository.save(cardMelba1);
+			cardRepository.save(cardMelba1);*/
 		};
 	}
 }
